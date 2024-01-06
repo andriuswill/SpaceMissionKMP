@@ -31,7 +31,8 @@ class RocketComponent {
             it.launchSuccess == true
         }
 
-        val date = Instant.parse(lastSuccessLaunch.launchDateUTC)
+        val date = Instant
+            .parse(lastSuccessLaunch.launchDateUTC)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
         return "${date.month} ${date.dayOfMonth}, ${date.year}"
