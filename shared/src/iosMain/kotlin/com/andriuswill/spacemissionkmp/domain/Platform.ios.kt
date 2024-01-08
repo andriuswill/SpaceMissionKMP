@@ -1,4 +1,4 @@
-package com.andriuswill.spacemissionkmp
+package com.andriuswill.spacemissionkmp.domain
 
 import platform.UIKit.UIDevice
 

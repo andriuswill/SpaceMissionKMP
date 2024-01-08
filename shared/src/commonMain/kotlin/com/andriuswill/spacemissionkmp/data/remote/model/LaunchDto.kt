@@ -1,10 +1,10 @@
-package com.andriuswill.spacemissionkmp
+package com.andriuswill.spacemissionkmp.data.remote.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RocketLaunch (
+data class LaunchDto (
     @SerialName("flight_number")
     val flightNumber: Int,
     @SerialName("name")

@@ -1,4 +1,4 @@
-package com.andriuswill.spacemissionkmp
+package com.andriuswill.spacemissionkmp.domain
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate

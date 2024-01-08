@@ -1,8 +1,13 @@
-package com.andriuswill.spacemissionkmp
+package com.andriuswill.spacemissionkmp.data
 
+import com.andriuswill.spacemissionkmp.data.remote.model.LaunchDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.datetime.Instant
@@ -10,9 +15,13 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
 
-class RocketComponent {
+class LaunchesApi {
 
-    private val httpClient = HttpClient {
+    companion object {
+        const val URL = "https://api.spacexdata.com/v4/"
+    }
+
+    val httpClient = HttpClient {
         install(ContentNegotiation) {
             json(Json {
                 prettyPrint = true
@@ -20,11 +29,15 @@ class RocketComponent {
                 ignoreUnknownKeys = true
             })
         }
+        install(Logging) {
+            logger = Logger.SIMPLE
+            level = LogLevel.ALL
+        }
     }
 
     private suspend fun getDateOfLastSuccessfulLaunch(): String {
-        val rockets: List<RocketLaunch> = httpClient
-            .get("https://api.spacexdata.com/v4/launches")
+        val rockets: List<LaunchDto> = httpClient
+            .get(URL)
             .body()
 
         val lastSuccessLaunch = rockets.last {

@@ -1,4 +1,4 @@
-package com.andriuswill.spacemissionkmp
+package com.andriuswill.spacemissionkmp.domain
 
 class AndroidPlatform : Platform {
     override val name: String = "Android ${android.os.Build.VERSION.SDK_INT}"
