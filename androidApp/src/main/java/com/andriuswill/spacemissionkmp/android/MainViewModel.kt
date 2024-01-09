@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class MainViewModel() : ViewModel() {
-
-    private val launchesUseCase: LaunchesUseCase = LaunchesUseCase()
+class MainViewModel(
+    launchesUseCase: LaunchesUseCase
+): ViewModel() {
 
     private val _launchesList = MutableStateFlow<List<LaunchDto>>(listOf())
     val launchesList: StateFlow<List<LaunchDto>> get() = _launchesList
