@@ -11,12 +11,26 @@ class LaunchesRepositoryImpl(
 ) : LaunchesRepository {
 
     companion object {
-        const val URL_PATH = "launches"
+        const val basePath = "launches"
+        const val nextFilter = "next"
+        const val lastFilter = "latest"
     }
 
-    override suspend fun fetchLaunches(): List<LaunchDto> {
-        return api.httpClient.get(LaunchesApi.URL) {
-            this.url.appendPathSegments(URL_PATH)
+    override suspend fun getLaunches(): List<LaunchDto> {
+        return api.httpClient.get {
+            this.url.appendPathSegments(basePath)
+        }.body()
+    }
+
+    override suspend fun getNextLaunch(): LaunchDto {
+        return api.httpClient.get {
+            this.url.appendPathSegments("$basePath/$nextFilter")
+        }.body()
+    }
+
+    override suspend fun getLastLaunch(): LaunchDto {
+        return api.httpClient.get {
+            this.url.appendPathSegments("$basePath/$lastFilter")
         }.body()
     }
 }

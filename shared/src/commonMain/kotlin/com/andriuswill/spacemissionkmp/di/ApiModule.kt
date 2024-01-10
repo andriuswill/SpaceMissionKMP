@@ -10,9 +10,9 @@ val apiModule = module {
     //singleOf(::LaunchesApi)
     //singleOf(::LaunchesRepositoryImpl) { bind<LaunchesRepository>() }
     //singleOf(::LaunchesUseCase)
-    single { LaunchesApi() }
-    single<LaunchesRepository> { LaunchesRepositoryImpl(get()) }
-    single { LaunchesUseCase(get()) }
+    factory { LaunchesApi() }
+    factory<LaunchesRepository> { LaunchesRepositoryImpl(get()) }
+    factory { LaunchesUseCase(get()) }
 
 }
 
