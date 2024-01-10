@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    launchesUseCase: LaunchesUseCase
+    private val launchesUseCase: LaunchesUseCase
 ): BaseViewModel<LaunchesState, LaunchesAction>() {
 
     override val state: StateFlow<LaunchesState>
@@ -20,35 +20,29 @@ class MainViewModel(
 
     private val reducer = LaunchesReducer(LaunchesState.initial())
 
+    fun sendEvent(action: LaunchesAction) {
+        reducer.sendAction(action)
+    }
+
     inner class LaunchesReducer(
         initialValue: LaunchesState
     ) : Reducer<LaunchesState, LaunchesAction>(initialValue) {
         override fun reduce(oldState: LaunchesState, action: LaunchesAction) {
             when(action){
-                is LaunchesAction.LoadLaunches -> Unit
-                is LaunchesAction.NavigateToPastLaunches -> Unit
-                is LaunchesAction.NavigateToUpcomingLaunches -> Unit
+                is LaunchesAction.LoadLaunches -> loadLaunches()
+                is LaunchesAction.NavigateToLaunch -> Unit
             }
         }
     }
 
-    init {
+    fun loadLaunches(){
         viewModelScope.launch {
-            launchesUseCase.getNextLaunch().collect { result ->
+            launchesUseCase.getMainLaunches().collect { result ->
                 if(result.isSuccess){
                     updateState { currentState ->
                         currentState.copy(
-                            nextLaunch = result.getOrNull()
-                        )
-                    }
-                }
-            }
-
-            launchesUseCase.getLastLaunch().collect { result ->
-                if(result.isSuccess){
-                    updateState { currentState ->
-                        currentState.copy(
-                            lastLaunch = result.getOrNull()
+                            nextLaunch = result.getOrNull()?.nextLaunch,
+                            lastLaunch = result.getOrNull()?.lastLaunch
                         )
                     }
                 }

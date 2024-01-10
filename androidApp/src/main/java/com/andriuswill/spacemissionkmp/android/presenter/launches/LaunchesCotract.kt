@@ -18,6 +18,5 @@ data class LaunchesState(
 
 sealed class LaunchesAction : Action {
     data object LoadLaunches : LaunchesAction()
-    data object NavigateToUpcomingLaunches : LaunchesAction()
-    data object NavigateToPastLaunches : LaunchesAction()
+    data object NavigateToLaunch : LaunchesAction()
 }

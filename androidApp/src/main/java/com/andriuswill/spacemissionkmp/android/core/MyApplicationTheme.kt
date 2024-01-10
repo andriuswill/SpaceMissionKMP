@@ -1,4 +1,4 @@
-package com.andriuswill.spacemissionkmp.android
+package com.andriuswill.spacemissionkmp.android.core
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape

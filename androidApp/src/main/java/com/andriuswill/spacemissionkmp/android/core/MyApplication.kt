@@ -1,4 +1,4 @@
-package com.andriuswill.spacemissionkmp.android
+package com.andriuswill.spacemissionkmp.android.core
 
 import android.app.Application
 import com.andriuswill.spacemissionkmp.android.di.androidModule
