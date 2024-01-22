@@ -13,37 +13,49 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.andriuswill.spacemissionkmp.android.core.component.ErrorComponent
+import com.andriuswill.spacemissionkmp.android.core.component.LoadingComponent
+import com.andriuswill.spacemissionkmp.domain.entities.MainLaunches
 import org.koin.compose.koinInject
 
 @Composable
 fun LaunchesScreen() {
     val mainViewModel: MainViewModel = koinInject<MainViewModel>()
 
-    LaunchedEffect(Unit){
-        mainViewModel.sendEvent(LaunchesAction.LoadLaunches)
+    when(
+        val launchesState = mainViewModel.state.collectAsState().value
+    ) {
+        is LaunchesState.Initial -> {
+            mainViewModel.sendEvent(LaunchesAction.LoadLaunches)
+        }
+        is LaunchesState.Loading -> {
+            LoadingComponent()
+        }
+        is LaunchesState.Success -> {
+            LaunchesContent(mainLaunches = launchesState.mainLaunches)
+        }
+        is LaunchesState.Error -> {
+            ErrorComponent(message = launchesState.message)
+        }
     }
-
-    val launches = mainViewModel.state.collectAsState()
-    LaunchesContent(state = launches.value)
 }
 
 @Composable
-fun LaunchesContent(state: LaunchesState) {
+fun LaunchesContent(mainLaunches: MainLaunches) {
     Column(
         modifier = Modifier
             .padding(32.dp)
             .fillMaxSize()
     ) {
-        LaunchCard(state.nextLaunch?.missionName.orEmpty())
+        LaunchCard(mainLaunches.nextLaunch.missionName)
         Spacer(Modifier.size(32.dp))
-        LaunchCard(state.lastLaunch?.missionName.orEmpty())
+        LaunchCard(mainLaunches.lastLaunch.missionName)
     }
 }
 
