@@ -8,7 +8,7 @@ import com.andriuswill.spacemissionkmp.domain.usecases.LaunchesUseCase
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class MainViewModel(
+class LaunchesViewModel(
     private val launchesUseCase: LaunchesUseCase
 ): BaseViewModel<LaunchesState, LaunchesAction>() {
 

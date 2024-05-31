@@ -1,6 +1,7 @@
 package com.andriuswill.spacemissionkmp.android.presenter.launches
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -25,20 +26,25 @@ import com.andriuswill.spacemissionkmp.domain.entities.MainLaunches
 import org.koin.compose.koinInject
 
 @Composable
-fun LaunchesScreen() {
-    val mainViewModel: MainViewModel = koinInject<MainViewModel>()
+fun LaunchesScreen(
+    navigateToDetails: (String) -> Unit
+) {
+    val launchesViewModel = koinInject<LaunchesViewModel>()
 
     when(
-        val launchesState = mainViewModel.state.collectAsState().value
+        val launchesState = launchesViewModel.state.collectAsState().value
     ) {
         is LaunchesState.Initial -> {
-            mainViewModel.sendEvent(LaunchesAction.LoadLaunches)
+            launchesViewModel.sendEvent(LaunchesAction.LoadLaunches)
         }
         is LaunchesState.Loading -> {
             LoadingComponent()
         }
         is LaunchesState.Success -> {
-            LaunchesContent(mainLaunches = launchesState.mainLaunches)
+            LaunchesContent(
+                mainLaunches = launchesState.mainLaunches,
+                navigateToDetails = navigateToDetails
+            )
         }
         is LaunchesState.Error -> {
             ErrorComponent(message = launchesState.message)
@@ -47,20 +53,32 @@ fun LaunchesScreen() {
 }
 
 @Composable
-fun LaunchesContent(mainLaunches: MainLaunches) {
+fun LaunchesContent(
+    mainLaunches: MainLaunches,
+    navigateToDetails: (String) -> Unit
+) {
     Column(
         modifier = Modifier
             .padding(32.dp)
             .fillMaxSize()
     ) {
-        LaunchCard(mainLaunches.nextLaunch.missionName)
+        LaunchCard(
+            launchTitle = mainLaunches.nextLaunch.missionName,
+            navigateToDetails = navigateToDetails
+        )
         Spacer(Modifier.size(32.dp))
-        LaunchCard(mainLaunches.lastLaunch.missionName)
+        LaunchCard(
+            launchTitle = mainLaunches.lastLaunch.missionName,
+            navigateToDetails = navigateToDetails
+        )
     }
 }
 
 @Composable
-fun ColumnScope.LaunchCard(launchTitle: String){
+fun ColumnScope.LaunchCard(
+    launchTitle: String,
+    navigateToDetails: (String) -> Unit
+){
     Box(modifier = Modifier
         .align(Alignment.CenterHorizontally)
         .weight(1F)
@@ -70,6 +88,9 @@ fun ColumnScope.LaunchCard(launchTitle: String){
             color = Gray,
             shape = RoundedCornerShape(16.dp)
         )
+        .clickable {
+            navigateToDetails(launchTitle)
+        }
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
