@@ -17,9 +17,10 @@ extension ContentView {
 
         func startObserving() {
             Task {
-                for await phrase in Greeting().greet() {
-                    self.greetings.append(phrase)
-                }
+                //TODO Fix IOS in the future
+                //for await phrase in Greeting().greet() {
+                //    self.greetings.append(phrase)
+                //}
             }
         }
     }

@@ -30,4 +30,4 @@ class LaunchesApi {
             level = LogLevel.ALL
         }
     }
-}
+}  
