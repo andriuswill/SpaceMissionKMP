@@ -31,21 +31,24 @@ fun LaunchesScreen(
 ) {
     val launchesViewModel = koinInject<LaunchesViewModel>()
 
-    when(
+    when (
         val launchesState = launchesViewModel.state.collectAsState().value
     ) {
         is LaunchesState.Initial -> {
             launchesViewModel.sendEvent(LaunchesAction.LoadLaunches)
         }
+
         is LaunchesState.Loading -> {
             LoadingComponent()
         }
+
         is LaunchesState.Success -> {
             LaunchesContent(
                 mainLaunches = launchesState.mainLaunches,
                 navigateToDetails = navigateToDetails
             )
         }
+
         is LaunchesState.Error -> {
             ErrorComponent(message = launchesState.message)
         }
@@ -78,19 +81,20 @@ fun LaunchesContent(
 fun ColumnScope.LaunchCard(
     launchTitle: String,
     navigateToDetails: (String) -> Unit
-){
-    Box(modifier = Modifier
-        .align(Alignment.CenterHorizontally)
-        .weight(1F)
-        .fillMaxWidth()
-        .border(
-            width = 4.dp,
-            color = Gray,
-            shape = RoundedCornerShape(16.dp)
-        )
-        .clickable {
-            navigateToDetails(launchTitle)
-        }
+) {
+    Box(
+        modifier = Modifier
+            .align(Alignment.CenterHorizontally)
+            .weight(1F)
+            .fillMaxWidth()
+            .border(
+                width = 4.dp,
+                color = Gray,
+                shape = RoundedCornerShape(16.dp)
+            )
+            .clickable {
+                navigateToDetails(launchTitle)
+            }
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
