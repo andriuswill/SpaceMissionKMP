@@ -5,8 +5,9 @@ struct ContentView: View {
     @ObservedObject private(set) var viewModel: ViewModel
 
     var body: some View {
-        ListView(phrases: viewModel.greetings)
-            .onAppear { self.viewModel.startObserving() }
+        Text("working on this")
+        /* ListView(phrases: viewModel.greetings)
+            .onAppear { self.viewModel.startObserving() } */
     }
 }
 
